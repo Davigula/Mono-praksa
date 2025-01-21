@@ -1,0 +1,86 @@
+[
+  {
+    "ContainingType": "Recipe.API.Controllers.WeatherForecastController",
+    "Method": "Post",
+    "RelativePath": "WeatherForecast/{summ}",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "summ",
+        "Type": "System.String",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "Recipe.API.Controllers.WeatherForecastController",
+    "Method": "Put",
+    "RelativePath": "WeatherForecast/{tempC}",
+    "HttpMethod": "PUT",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "tempC",
+        "Type": "System.Int32",
+        "IsRequired": true
+      },
+      {
+        "Name": "newlySum",
+        "Type": "System.String",
+        "IsRequired": false
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "Recipe.API.Controllers.WeatherForecastController",
+    "Method": "Delete",
+    "RelativePath": "WeatherForecast/{tempC}",
+    "HttpMethod": "DELETE",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "tempC",
+        "Type": "System.Int32",
+        "IsRequired": true
+      },
+      {
+        "Name": "newlySum",
+        "Type": "System.String",
+        "IsRequired": false
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "Recipe.API.Controllers.WeatherForecastController",
+    "Method": "GetDavid",
+    "RelativePath": "WeatherForecast/GetAnotherForecast/{id}",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "id",
+        "Type": "System.String",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "Recipe.API.Controllers.WeatherForecastController",
+    "Method": "Get",
+    "RelativePath": "WeatherForecast/GetWeatherForecast",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": []
+  }
+]
