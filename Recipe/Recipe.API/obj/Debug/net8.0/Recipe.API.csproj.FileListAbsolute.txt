@@ -6,7 +6,10 @@ C:\David\Praksa\Recipe\Recipe.API\bin\Debug\net8.0\Recipe.API.deps.json
 C:\David\Praksa\Recipe\Recipe.API\bin\Debug\net8.0\Recipe.API.runtimeconfig.json
 C:\David\Praksa\Recipe\Recipe.API\bin\Debug\net8.0\Recipe.API.dll
 C:\David\Praksa\Recipe\Recipe.API\bin\Debug\net8.0\Recipe.API.pdb
+C:\David\Praksa\Recipe\Recipe.API\bin\Debug\net8.0\Microsoft.Extensions.DependencyInjection.Abstractions.dll
+C:\David\Praksa\Recipe\Recipe.API\bin\Debug\net8.0\Microsoft.Extensions.Logging.Abstractions.dll
 C:\David\Praksa\Recipe\Recipe.API\bin\Debug\net8.0\Microsoft.OpenApi.dll
+C:\David\Praksa\Recipe\Recipe.API\bin\Debug\net8.0\Npgsql.dll
 C:\David\Praksa\Recipe\Recipe.API\bin\Debug\net8.0\Swashbuckle.AspNetCore.Swagger.dll
 C:\David\Praksa\Recipe\Recipe.API\bin\Debug\net8.0\Swashbuckle.AspNetCore.SwaggerGen.dll
 C:\David\Praksa\Recipe\Recipe.API\bin\Debug\net8.0\Swashbuckle.AspNetCore.SwaggerUI.dll

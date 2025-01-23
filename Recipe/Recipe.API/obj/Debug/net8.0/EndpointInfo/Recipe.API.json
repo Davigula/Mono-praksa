@@ -17,14 +17,14 @@
         }
       }
     },
-    "/WeatherForecast/GetAnotherForecast/{id}": {
+    "/WeatherForecast/GetAnotherForecast/{ss}": {
       "get": {
         "tags": [
           "WeatherForecast"
         ],
         "parameters": [
           {
-            "name": "id",
+            "name": "ss",
             "in": "path",
             "required": true,
             "schema": {
@@ -39,18 +39,47 @@
         }
       }
     },
-    "/WeatherForecast/{summ}": {
+    "/WeatherForecast": {
       "post": {
+        "tags": [
+          "WeatherForecast"
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/WeatherForecast"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/WeatherForecast"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/WeatherForecast"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      },
+      "delete": {
         "tags": [
           "WeatherForecast"
         ],
         "parameters": [
           {
-            "name": "summ",
-            "in": "path",
-            "required": true,
+            "name": "id",
+            "in": "query",
             "schema": {
-              "type": "string"
+              "type": "integer",
+              "format": "int32"
             }
           }
         ],
@@ -81,36 +110,7 @@
             "in": "query",
             "schema": {
               "type": "string",
-              "default": "Danas"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "OK"
-          }
-        }
-      },
-      "delete": {
-        "tags": [
-          "WeatherForecast"
-        ],
-        "parameters": [
-          {
-            "name": "tempC",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "integer",
-              "format": "int32"
-            }
-          },
-          {
-            "name": "newlySum",
-            "in": "query",
-            "schema": {
-              "type": "string",
-              "default": "Danas"
+              "default": "Today"
             }
           }
         ],
@@ -122,5 +122,35 @@
       }
     }
   },
-  "components": { }
+  "components": {
+    "schemas": {
+      "WeatherForecast": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "date": {
+            "type": "string",
+            "format": "date"
+          },
+          "temperatureC": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "temperatureF": {
+            "type": "integer",
+            "format": "int32",
+            "readOnly": true
+          },
+          "summary": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      }
+    }
+  }
 }

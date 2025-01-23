@@ -2,15 +2,26 @@ using System;
 using System.Collections.Generic;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
+using Npgsql;
 using static Microsoft.AspNetCore.Mvc.ModelBinding.ModelStateDictionary;
+
+
 
 namespace Recipe.API.Controllers
 {
+
     [ApiController]
     [Route("[controller]")]
     public class WeatherForecastController : ControllerBase
     {
         
+
+        
+        private const string CONNECTION_STRING = "Host=localhost:5432;" +
+            "Username=postgres;" +
+            "Password=1234;" +
+            "Database=postgres";
+
         private static readonly string[] Summaries = new[]
         {
             "Freezing", "Bracing", "Chilly", "Cool", "Mild", "Warm", "Balmy", "Hot", "Sweltering", "Scorching"
@@ -26,6 +37,9 @@ namespace Recipe.API.Controllers
         private static List<WeatherForecast> list = 
             [];
 
+        const string TABLE_NAME = "\"WeatherForecasts\"";
+
+        // select po id za to služi private 
 
 
         private readonly ILogger<WeatherForecastController> _logger;
@@ -47,45 +61,65 @@ namespace Recipe.API.Controllers
                 return Ok(list);
             }
         }
-        [HttpGet("GetAnotherForecast/{ss}")]
+        [HttpGet("GetAnotherForecast/{id}")]
         //[Route("getbyss/{ss}")]
-        public IActionResult GetDavss(string ss)
+        public IActionResult GetById(int id)
         {
-            List<WeatherForecast> wheaterList = list.Where(p => p.Summary == ss).ToList();
+            
+            
+            
+            //List<WeatherForecast> wheaterList = list.Where(p => p.Summary == ss).ToList();
 
-            if (wheaterList == null || !wheaterList.Any()){
+            //if (wheaterList == null || !wheaterList.Any()){
                 
-                return BadRequest("Element not found");
+            //    return BadRequest("Element not found");
                 
-            }
-            else
-            {
-                return Ok(wheaterList);
-            }
+            //}
+            //else
+            //{
+            //    return Ok(wheaterList);
+            //}
             
         }
 
-        [HttpPost("{summ}")]
-        public IActionResult Post(string summ )
+        [HttpPost]
+        public IActionResult Post(WeatherForecast weather )
         {
 
-            
-            if (summ is string )
+            string commandText = $"INSERT INTO {TABLE_NAME} (id, date, temperaturec, summary) VALUES (@id, @date, @tempC, @summ) ";
+            try
             {
-                WeatherForecast newly = new WeatherForecast
+                using (var connection = new NpgsqlConnection(CONNECTION_STRING))
                 {
+                    using var command = new NpgsqlCommand(commandText, connection);
+                        
+                    connection.Open();
 
-                    TemperatureC = 0,
-                    Summary = summ
-                };
-                list.Add(newly);
-                return Ok("Element successfully added");
-            }
-            else
-            {
-                return BadRequest("There is no such object");
+                    command.Parameters.AddWithValue("id", NpgsqlTypes.NpgsqlDbType.Uuid, Guid.NewGuid());
+                    command.Parameters.AddWithValue("date", weather.Date);
+                    command.Parameters.AddWithValue("tempC", weather.TemperatureC);
+                    command.Parameters.AddWithValue("summ", NpgsqlTypes.NpgsqlDbType.Varchar, weather.Summary);
 
-            }
+                    var numberOfCommits = command.ExecuteNonQuery();
+                    connection.Close();
+
+                    if (numberOfCommits > 0)
+                    {
+
+                        return Ok("ALl good.");
+                    }
+                    else
+                    {
+                        return BadRequest("Didn't enter commit");
+                    }
+
+                    }
+                }
+                catch (Exception ex)
+                {
+                    return BadRequest(ex.Message);
+                }
+               
         }
 
         [HttpPut("{tempC}")]
@@ -105,21 +139,37 @@ namespace Recipe.API.Controllers
 
         }
 
-        [HttpDelete("{tempC}")]
-        public IActionResult Delete(int tempC, string newlySum = "Today")
+        [HttpDelete]
+        public IActionResult Delete(int id)
         {
-            WeatherForecast weather = list.FirstOrDefault(p => p.TemperatureC == tempC);
+            string commandText = $"DELETE FROM {TABLE_NAME} WHERE ID=(@id)";
 
-            if (weather != null)
-            {
-                list.Remove(weather);
-                return Ok("Element uspješno izbrisan");
-            }
-            else
-            {
-                return BadRequest("There is no such object");
+            try
+            { 
+                using (var connection = new NpgsqlConnection(CONNECTION_STRING)){ 
+                    using var command = new NpgsqlCommand(commandText, connection);
+                    connection.Open();
+                    command.Parameters.AddWithValue("id", id);
+                    var numberOfCommits = command.ExecuteNonQuery();
 
+                    if (numberOfCommits < 1)
+                    {
+                        return BadRequest("Data isnt deleted");
+                    }else{
+
+                        return Ok("Data deleted successfully!");
+                    }
+                
+                }
             }
+            catch(Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+            
+            
+            
+            
 
         }
 
