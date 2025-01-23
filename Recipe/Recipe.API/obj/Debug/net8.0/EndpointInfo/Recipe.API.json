@@ -17,18 +17,19 @@
         }
       }
     },
-    "/WeatherForecast/GetAnotherForecast/{ss}": {
+    "/WeatherForecast/GetAnotherForecast/{id}": {
       "get": {
         "tags": [
           "WeatherForecast"
         ],
         "parameters": [
           {
-            "name": "ss",
+            "name": "id",
             "in": "path",
             "required": true,
             "schema": {
-              "type": "string"
+              "type": "string",
+              "format": "uuid"
             }
           }
         ],
@@ -78,39 +79,8 @@
             "name": "id",
             "in": "query",
             "schema": {
-              "type": "integer",
-              "format": "int32"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "OK"
-          }
-        }
-      }
-    },
-    "/WeatherForecast/{tempC}": {
-      "put": {
-        "tags": [
-          "WeatherForecast"
-        ],
-        "parameters": [
-          {
-            "name": "tempC",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "integer",
-              "format": "int32"
-            }
-          },
-          {
-            "name": "newlySum",
-            "in": "query",
-            "schema": {
               "type": "string",
-              "default": "Today"
+              "format": "uuid"
             }
           }
         ],

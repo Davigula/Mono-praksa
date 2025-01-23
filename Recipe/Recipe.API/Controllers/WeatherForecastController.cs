@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Data;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 using Npgsql;
@@ -52,33 +53,79 @@ namespace Recipe.API.Controllers
         [HttpGet("GetWeatherForecast")]
         public IActionResult Get()
         {
-            if(!list.Any()){
+            string commandText = $"SELECT id, date, temperaturec, summary FROM {TABLE_NAME}";
+            try { 
+                using(var connection = new NpgsqlConnection(CONNECTION_STRING)) {
+                    using var command = new NpgsqlCommand(commandText, connection);
+                    connection.Open();
+                    using(var reader = command.ExecuteReader()) {
+                        var weatherList = new List<WeatherForecast>();
+                        while (reader.Read()) {
+                            var weather = new WeatherForecast
+                            {
+                                Id = reader.GetGuid(reader.GetOrdinal("id")),
+                                TemperatureC = reader.GetInt32(reader.GetOrdinal("temperaturec")),
+                                Summary = reader.GetString(reader.GetOrdinal("summary"))
+                                //Date = reader.GetString(ToString( reader.GetOrdinal("id"))),
+                            };
+                            weatherList.Add(weather);
+                        }
+                        if(weatherList.Count > 0)
+                        {
+                            return Ok(weatherList);
+                        }
+                        else
+                        {
+                            return BadRequest("No records found");
+                        }
+                    
+                    }
                 
-                return BadRequest("List is empty");
-            }
-            else
-            {
-                return Ok(list);
+                }
+            
+            }catch(Exception ex) {
+                return BadRequest(ex.Message);
             }
         }
         [HttpGet("GetAnotherForecast/{id}")]
         //[Route("getbyss/{ss}")]
-        public IActionResult GetById(int id)
+        public IActionResult GetById(Guid id)
         {
-            
-            
-            
-            //List<WeatherForecast> wheaterList = list.Where(p => p.Summary == ss).ToList();
+            string commandText = $"SELECT id, date, temperaturec, summary FROM {TABLE_NAME} WHERE id=@id";
+            try
+            {
+                using (var connection = new NpgsqlConnection(CONNECTION_STRING))
+                {
+                    using var command = new NpgsqlCommand(commandText, connection);
+                    connection.Open();
+                    command.Parameters.AddWithValue("id", id);
 
-            //if (wheaterList == null || !wheaterList.Any()){
+                    using (var Reader = command.ExecuteReader()){
+                        if (Reader.Read()) {
+                            WeatherForecast weather = new WeatherForecast{
+                                Id = Reader.GetGuid(Reader.GetOrdinal("id")),
+                                //Date = Reader.GetOrdinal("date")
+                                //Date = Reader.GetString(Reader.GetOrdinal("date").ToString()),
+                                TemperatureC = Reader.GetInt32(Reader.GetOrdinal("temperaturec")),
+                                Summary = Reader.GetString(Reader.GetOrdinal("summary"))
+
+
+                            };
+                            return Ok(weather);
+                        }
+                        else
+                        {
+                            return BadRequest("Nema takvog elementa!");
+                        }
+                    }
+                }
+            }catch(Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+            
                 
-            //    return BadRequest("Element not found");
-                
-            //}
-            //else
-            //{
-            //    return Ok(wheaterList);
-            //}
+            
             
         }
 
@@ -122,26 +169,24 @@ namespace Recipe.API.Controllers
                
         }
 
-        [HttpPut("{tempC}")]
-        public IActionResult Put(int tempC, string newlySum= "Today")
-        {
-            WeatherForecast weather = list.FirstOrDefault(p => p.TemperatureC == tempC);
-            
-            if(weather != null)
-            {
-                weather.Summary = "Not so bad";
-                return Ok("Element successfully changed"); 
-            }else
-            {
-                return BadRequest("There is no such object");
+        //[HttpPut("{id}")]
+        //public IActionResult Put(Guid id, WeatherForecast updatedWeather)
+        //{
+        //    var getResult = GetById(id);
+        //    if(getResult)
 
-            }
-
-        }
+        //}
 
         [HttpDelete]
-        public IActionResult Delete(int id)
+        public IActionResult Delete(Guid id)
         {
+
+            var getResult = GetById(id);
+            if(getResult is NotFoundResult)
+            {
+                return NotFound("Not found with that ID");
+            }
+
             string commandText = $"DELETE FROM {TABLE_NAME} WHERE ID=(@id)";
 
             try
@@ -164,7 +209,7 @@ namespace Recipe.API.Controllers
             }
             catch(Exception ex)
             {
-                return BadRequest(ex.Message);
+                return BadRequest("jaoooo");
             }
             
             

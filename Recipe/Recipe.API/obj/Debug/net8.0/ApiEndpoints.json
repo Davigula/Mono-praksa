@@ -25,7 +25,7 @@
     "Parameters": [
       {
         "Name": "id",
-        "Type": "System.Int32",
+        "Type": "System.Guid",
         "IsRequired": false
       }
     ],
@@ -33,36 +33,15 @@
   },
   {
     "ContainingType": "Recipe.API.Controllers.WeatherForecastController",
-    "Method": "Put",
-    "RelativePath": "WeatherForecast/{tempC}",
-    "HttpMethod": "PUT",
-    "IsController": true,
-    "Order": 0,
-    "Parameters": [
-      {
-        "Name": "tempC",
-        "Type": "System.Int32",
-        "IsRequired": true
-      },
-      {
-        "Name": "newlySum",
-        "Type": "System.String",
-        "IsRequired": false
-      }
-    ],
-    "ReturnTypes": []
-  },
-  {
-    "ContainingType": "Recipe.API.Controllers.WeatherForecastController",
-    "Method": "GetDavss",
-    "RelativePath": "WeatherForecast/GetAnotherForecast/{ss}",
+    "Method": "GetById",
+    "RelativePath": "WeatherForecast/GetAnotherForecast/{id}",
     "HttpMethod": "GET",
     "IsController": true,
     "Order": 0,
     "Parameters": [
       {
-        "Name": "ss",
-        "Type": "System.String",
+        "Name": "id",
+        "Type": "System.Guid",
         "IsRequired": true
       }
     ],
