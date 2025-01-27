@@ -1,0 +1,11 @@
+C:\David\Praksa\Recipe\Recipe.Model\bin\Debug\net8.0\Recipe.Model.deps.json
+C:\David\Praksa\Recipe\Recipe.Model\bin\Debug\net8.0\Recipe.Model.dll
+C:\David\Praksa\Recipe\Recipe.Model\bin\Debug\net8.0\Recipe.Model.pdb
+C:\David\Praksa\Recipe\Recipe.Model\obj\Debug\net8.0\Recipe.Model.GeneratedMSBuildEditorConfig.editorconfig
+C:\David\Praksa\Recipe\Recipe.Model\obj\Debug\net8.0\Recipe.Model.AssemblyInfoInputs.cache
+C:\David\Praksa\Recipe\Recipe.Model\obj\Debug\net8.0\Recipe.Model.AssemblyInfo.cs
+C:\David\Praksa\Recipe\Recipe.Model\obj\Debug\net8.0\Recipe.Model.csproj.CoreCompileInputs.cache
+C:\David\Praksa\Recipe\Recipe.Model\obj\Debug\net8.0\Recipe.Model.dll
+C:\David\Praksa\Recipe\Recipe.Model\obj\Debug\net8.0\refint\Recipe.Model.dll
+C:\David\Praksa\Recipe\Recipe.Model\obj\Debug\net8.0\Recipe.Model.pdb
+C:\David\Praksa\Recipe\Recipe.Model\obj\Debug\net8.0\ref\Recipe.Model.dll

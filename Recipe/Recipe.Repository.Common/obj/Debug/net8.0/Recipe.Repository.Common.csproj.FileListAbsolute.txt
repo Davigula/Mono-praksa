@@ -1,0 +1,11 @@
+C:\David\Praksa\Recipe\Recipe.Repository.Common\bin\Debug\net8.0\Recipe.Repository.Common.deps.json
+C:\David\Praksa\Recipe\Recipe.Repository.Common\bin\Debug\net8.0\Recipe.Repository.Common.dll
+C:\David\Praksa\Recipe\Recipe.Repository.Common\bin\Debug\net8.0\Recipe.Repository.Common.pdb
+C:\David\Praksa\Recipe\Recipe.Repository.Common\obj\Debug\net8.0\Recipe.Repository.Common.GeneratedMSBuildEditorConfig.editorconfig
+C:\David\Praksa\Recipe\Recipe.Repository.Common\obj\Debug\net8.0\Recipe.Repository.Common.AssemblyInfoInputs.cache
+C:\David\Praksa\Recipe\Recipe.Repository.Common\obj\Debug\net8.0\Recipe.Repository.Common.AssemblyInfo.cs
+C:\David\Praksa\Recipe\Recipe.Repository.Common\obj\Debug\net8.0\Recipe.Repository.Common.csproj.CoreCompileInputs.cache
+C:\David\Praksa\Recipe\Recipe.Repository.Common\obj\Debug\net8.0\Recipe.Repository.Common.dll
+C:\David\Praksa\Recipe\Recipe.Repository.Common\obj\Debug\net8.0\refint\Recipe.Repository.Common.dll
+C:\David\Praksa\Recipe\Recipe.Repository.Common\obj\Debug\net8.0\Recipe.Repository.Common.pdb
+C:\David\Praksa\Recipe\Recipe.Repository.Common\obj\Debug\net8.0\ref\Recipe.Repository.Common.dll
