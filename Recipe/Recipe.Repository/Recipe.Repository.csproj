@@ -11,6 +11,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\Recipe.Common\Recipe.Common.csproj" />
     <ProjectReference Include="..\Recipe.Model\Recipe.Model.csproj" />
     <ProjectReference Include="..\Recipe.Repository.Common\Recipe.Repository.Common.csproj" />
   </ItemGroup>

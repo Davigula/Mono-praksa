@@ -189,6 +189,16 @@
           "buildTransitive/net6.0/_._": {}
         }
       },
+      "Recipe.Common/1.0.0": {
+        "type": "project",
+        "framework": ".NETCoreApp,Version=v8.0",
+        "compile": {
+          "bin/placeholder/Recipe.Common.dll": {}
+        },
+        "runtime": {
+          "bin/placeholder/Recipe.Common.dll": {}
+        }
+      },
       "Recipe.Model/1.0.0": {
         "type": "project",
         "framework": ".NETCoreApp,Version=v8.0",
@@ -204,6 +214,7 @@
         "framework": ".NETCoreApp,Version=v8.0",
         "dependencies": {
           "Npgsql": "9.0.2",
+          "Recipe.Common": "1.0.0",
           "Recipe.Model": "1.0.0",
           "Recipe.Repository.Common": "1.0.0"
         },
@@ -217,6 +228,9 @@
       "Recipe.Repository.Common/1.0.0": {
         "type": "project",
         "framework": ".NETCoreApp,Version=v8.0",
+        "dependencies": {
+          "Recipe.Common": "1.0.0"
+        },
         "compile": {
           "bin/placeholder/Recipe.Repository.Common.dll": {}
         },
@@ -228,6 +242,7 @@
         "type": "project",
         "framework": ".NETCoreApp,Version=v8.0",
         "dependencies": {
+          "Recipe.Common": "1.0.0",
           "Recipe.Model": "1.0.0",
           "Recipe.Repository.Common": "1.0.0",
           "Recipe.Service.Common": "1.0.0"
@@ -242,6 +257,9 @@
       "Recipe.Service.Common/1.0.0": {
         "type": "project",
         "framework": ".NETCoreApp,Version=v8.0",
+        "dependencies": {
+          "Recipe.Common": "1.0.0"
+        },
         "compile": {
           "bin/placeholder/Recipe.Service.Common.dll": {}
         },
@@ -797,6 +815,11 @@
         "useSharedDesignerContext.txt"
       ]
     },
+    "Recipe.Common/1.0.0": {
+      "type": "project",
+      "path": "../Recipe.Common/Recipe.Common.csproj",
+      "msbuildProject": "../Recipe.Common/Recipe.Common.csproj"
+    },
     "Recipe.Model/1.0.0": {
       "type": "project",
       "path": "../Recipe.Model/Recipe.Model.csproj",
@@ -828,6 +851,7 @@
       "Autofac >= 8.2.0",
       "Autofac.Extensions.DependencyInjection >= 10.0.0",
       "Npgsql >= 9.0.2",
+      "Recipe.Common >= 1.0.0",
       "Recipe.Model >= 1.0.0",
       "Recipe.Repository >= 1.0.0",
       "Recipe.Repository.Common >= 1.0.0",
@@ -868,6 +892,9 @@
         "net8.0": {
           "targetAlias": "net8.0",
           "projectReferences": {
+            "C:\\David\\Praksa\\Recipe\\Recipe.Common\\Recipe.Common.csproj": {
+              "projectPath": "C:\\David\\Praksa\\Recipe\\Recipe.Common\\Recipe.Common.csproj"
+            },
             "C:\\David\\Praksa\\Recipe\\Recipe.Model\\Recipe.Model.csproj": {
               "projectPath": "C:\\David\\Praksa\\Recipe\\Recipe.Model\\Recipe.Model.csproj"
             },

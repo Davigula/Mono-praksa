@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 {
   "version": 2,
   "dgSpecHash": "ps7d4Kj8nGU=",
@@ -6,13 +5,4 @@
   "projectFilePath": "C:\\David\\Praksa\\Recipe\\Recipe.Model\\Recipe.Model.csproj",
   "expectedPackageFiles": [],
   "logs": []
-=======
-{
-  "version": 2,
-  "dgSpecHash": "ps7d4Kj8nGU=",
-  "success": true,
-  "projectFilePath": "C:\\David\\Praksa\\Recipe\\Recipe.Model\\Recipe.Model.csproj",
-  "expectedPackageFiles": [],
-  "logs": []
->>>>>>> ee6675f (Nadograđen program i dodate nove funkcionalnosti)
 }

@@ -49,3 +49,5 @@ C:\David\Praksa\Recipe\Recipe.API\bin\Debug\net8.0\Recipe.Repository.Common.pdb
 C:\David\Praksa\Recipe\Recipe.API\bin\Debug\net8.0\Recipe.Repository.pdb
 C:\David\Praksa\Recipe\Recipe.API\bin\Debug\net8.0\Recipe.Service.Common.pdb
 C:\David\Praksa\Recipe\Recipe.API\bin\Debug\net8.0\Recipe.Service.pdb
+C:\David\Praksa\Recipe\Recipe.API\bin\Debug\net8.0\Recipe.Common.dll
+C:\David\Praksa\Recipe\Recipe.API\bin\Debug\net8.0\Recipe.Common.pdb

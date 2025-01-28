@@ -17,3 +17,5 @@ C:\David\Praksa\Recipe\Recipe.Service\obj\Debug\net8.0\Recipe.Service.dll
 C:\David\Praksa\Recipe\Recipe.Service\obj\Debug\net8.0\refint\Recipe.Service.dll
 C:\David\Praksa\Recipe\Recipe.Service\obj\Debug\net8.0\Recipe.Service.pdb
 C:\David\Praksa\Recipe\Recipe.Service\obj\Debug\net8.0\ref\Recipe.Service.dll
+C:\David\Praksa\Recipe\Recipe.Service\bin\Debug\net8.0\Recipe.Common.dll
+C:\David\Praksa\Recipe\Recipe.Service\bin\Debug\net8.0\Recipe.Common.pdb

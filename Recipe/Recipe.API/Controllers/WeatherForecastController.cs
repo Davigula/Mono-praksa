@@ -1,6 +1,8 @@
 using Recipe.API.Service.Common;
 using Microsoft.AspNetCore.Mvc;
 using Recipe.Model;
+using Recipe.Common;
+
 
 namespace Recipe.API.Controllers
 {
@@ -8,24 +10,44 @@ namespace Recipe.API.Controllers
     [Route("[controller]")]
     public class WeatherForecastController : ControllerBase
     {
-        //private readonly WeatherForecastService _service;
-        private readonly IService<WeatherForecast> _service;
-
-        public WeatherForecastController(IService<WeatherForecast> servo)
+        private readonly IService<WeatherForecast> ServiceObject;
+        
+        private readonly Sorting Sorting;
+        private readonly Pagging Pagging;
+        
+        public WeatherForecastController(IService<WeatherForecast> service)
         {
             // Ruèno kreiranje instance WeatherForecastService bez DI
             //var repository = new WeatherForecastRepository();
             //_weatherForecastService = new WeatherForecastService(repository);
 
-            _service = servo;
+            ServiceObject = service;
+            
         }
 
         [HttpGet("GetWeatherForecast")]
-        public IActionResult Get()
+        public IActionResult Get(string orderBy = "id", string sortOrder  ="ASC", int rpp = 10, int pageNumber = 1, string summary = "", int temperature = 17)
         {
             try
             {
-                var forecasts = _service.Get();
+                Sorting sorting = new Sorting
+                {
+                    OrderBy = orderBy,
+                    SortOrder = sortOrder
+                };
+                Pagging pagging = new Pagging
+                {
+                    RecordPerPage = rpp,
+                    PageNumber = pageNumber
+
+                };
+                AddFilter filter = new AddFilter
+                {
+                    Summary = summary,
+                    TemperatureC = temperature
+
+                };
+                var forecasts = ServiceObject.Get(sorting, pagging, filter);
                 return Ok(forecasts);
             }
             catch (Exception ex)
@@ -39,7 +61,7 @@ namespace Recipe.API.Controllers
         {
             try
             {
-                var forecast = _service.GetById(id);
+                var forecast = ServiceObject.GetById(id);
                 if (forecast == null)
                 {
                     return NotFound("Forecast not found with the provided ID.");
@@ -59,7 +81,7 @@ namespace Recipe.API.Controllers
             {
                 if (weather != null)
                 {
-                    _service.Post(weather);
+                    ServiceObject.Post(weather);
                     return Ok("Weather forecast added successfully.");
                 }
                 return BadRequest("Failed to add weather forecast.");
@@ -77,7 +99,7 @@ namespace Recipe.API.Controllers
             {
                 if (updatedWeather != null)
                 {
-                    _service.Put(id, updatedWeather);
+                    ServiceObject.Put(id, updatedWeather);
                     return Ok("Weather forecast updated successfully.");
                 }
                 return NotFound("Weather forecast not found with the provided ID.");
@@ -95,7 +117,7 @@ namespace Recipe.API.Controllers
             {
                 if (id != Guid.Empty)
                 {
-                    _service.Delete(id);
+                    ServiceObject.Delete(id);
                     return Ok("Weather forecast deleted successfully.");
                 }
                 return NotFound("Weather forecast not found with the provided ID.");

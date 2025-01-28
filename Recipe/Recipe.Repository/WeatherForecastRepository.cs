@@ -1,7 +1,11 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
+using System.Security.Cryptography;
+using System.Text;
 using Npgsql;
 using Recipe.API.Repository.Common;
+using Recipe.Common;
 using Recipe.Model;
 
 namespace Recipe.API.Repository
@@ -14,13 +18,77 @@ namespace Recipe.API.Repository
         {
         }
 
-        public override List<WeatherForecast> Get()
+        public void ApplyPagging(Pagging pagging, StringBuilder query, NpgsqlCommand command)
         {
-            string commandText = $"SELECT id, date, temperaturec, summary FROM {TableName}";
+
+            pagging.PageNumber = pagging.PageNumber > 0 ? pagging.PageNumber : 1;
+            pagging.RecordPerPage = pagging.RecordPerPage > 0 ? pagging.PageNumber : 10 ;
+
+            query.Append($" OFFSET @offset LIMIT @rpp ");                ;
+            command.Parameters.AddWithValue("offset", (pagging.PageNumber - 1) * pagging.RecordPerPage);
+            command.Parameters.AddWithValue("rpp", pagging.RecordPerPage);
+        }
+
+        public void ApplyFilter(AddFilter filter, StringBuilder query, NpgsqlCommand command)
+        {
+            query.Append(" WHERE 1=1 ");
+            if(!string.IsNullOrWhiteSpace(filter.Summary))
+            { 
+                query.Append(" AND summary = @summary ");
+                command.Parameters.AddWithValue("summary", filter.Summary);
+            }
+            if (filter.TemperatureC != 0)
+            {
+                query.Append(" and temperaturec = @tempc ");
+                command.Parameters.AddWithValue("tempc", filter.TemperatureC);
+            }
+
+                       
+        }
+
+
+
+        public override List<WeatherForecast> Get(Sorting sorting, Pagging pagging, AddFilter filter)
+        {
+            NpgsqlCommand command = new NpgsqlCommand();
+            //string commandText = $"SELECT id, date, temperaturec, summary FROM {TableName}";
+            StringBuilder query = new StringBuilder($"SELECT id, date, temperaturec, summary FROM {TableName} ");
+            //if (sorting == null) throw new Exception("There is no sorting");
+            //if (pagging == null) throw new Exception("There is no pagging");
+            if (filter == null)
+            {
+                throw new Exception("Nema filtera");
+
+            }
+            ApplyFilter(filter, query, command);
+            
+            if (sorting != null)
+            {
+                sorting.OrderBy = string.IsNullOrWhiteSpace(sorting.OrderBy) ? "id" : sorting.OrderBy;
+                sorting.SortOrder = string.IsNullOrWhiteSpace(sorting.SortOrder) ? "ASC" : "DESC";
+                query.Append($" ORDER BY {sorting.OrderBy ?? "id "}  {sorting.SortOrder ?? "ASC "}  ");
+            }
+            
+            if (pagging != null)
+            {
+                if(sorting == null)
+                {
+                    throw new Exception("Nema sortinga");
+                }
+                ApplyPagging(pagging, query, command);
+            }
+            
+
+
+
+
+            //myStringBuilder.Append($"OFFSET {(Pagging.PageNumber-1)*Pagging.RecordPerPage} ROWS FETCH NEXT {Pagging.RecordPerPage} ROWS ONLY");
+            //myStringBuilder.Append( $"WHERE temperaturec = {temperatureC}");
+
             var weatherList = new List<WeatherForecast>();
 
             using (var connection = new NpgsqlConnection(ConnectionString))
-            using (var command = new NpgsqlCommand(commandText, connection))
+            using (command = new NpgsqlCommand(query.ToString(), connection))
             {
                 connection.Open();
                 using var reader = command.ExecuteReader();

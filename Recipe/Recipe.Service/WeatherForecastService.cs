@@ -5,16 +5,21 @@ using System.Collections.Generic;
 using Recipe.API.Repository.Common;
 using Recipe.Model;
 using Recipe.Service;
+using Recipe.Common;
 
 namespace Recipe.API.Service
 {
     public class WeatherForecastService : BaseService<WeatherForecast>
     {
         private readonly IRepository<WeatherForecast> _repository;
+        private readonly Sorting Sorting;
+        private readonly Pagging Pagging;
 
+        
         public WeatherForecastService(IRepository<WeatherForecast> repository) : base(repository)
         {
             _repository = repository;
+            
         }
 
         // Dodatna logika specifična za WeatherForecast, ako je potrebna
