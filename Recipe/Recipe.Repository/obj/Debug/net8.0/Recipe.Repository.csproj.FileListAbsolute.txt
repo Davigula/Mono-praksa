@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 C:\David\Praksa\Recipe\Recipe.Repository\obj\Debug\net8.0\Recipe.Repository.GeneratedMSBuildEditorConfig.editorconfig
 C:\David\Praksa\Recipe\Recipe.Repository\obj\Debug\net8.0\Recipe.Repository.AssemblyInfoInputs.cache
 C:\David\Praksa\Recipe\Recipe.Repository\obj\Debug\net8.0\Recipe.Repository.AssemblyInfo.cs
@@ -15,3 +16,22 @@ C:\David\Praksa\Recipe\Recipe.Repository\obj\Debug\net8.0\Recipe.Repository.dll
 C:\David\Praksa\Recipe\Recipe.Repository\obj\Debug\net8.0\refint\Recipe.Repository.dll
 C:\David\Praksa\Recipe\Recipe.Repository\obj\Debug\net8.0\Recipe.Repository.pdb
 C:\David\Praksa\Recipe\Recipe.Repository\obj\Debug\net8.0\ref\Recipe.Repository.dll
+=======
+C:\David\Praksa\Recipe\Recipe.Repository\obj\Debug\net8.0\Recipe.Repository.GeneratedMSBuildEditorConfig.editorconfig
+C:\David\Praksa\Recipe\Recipe.Repository\obj\Debug\net8.0\Recipe.Repository.AssemblyInfoInputs.cache
+C:\David\Praksa\Recipe\Recipe.Repository\obj\Debug\net8.0\Recipe.Repository.AssemblyInfo.cs
+C:\David\Praksa\Recipe\Recipe.Repository\obj\Debug\net8.0\Recipe.Repository.csproj.CoreCompileInputs.cache
+C:\David\Praksa\Recipe\Recipe.Repository\obj\Debug\net8.0\Recipe.Repository.csproj.AssemblyReference.cache
+C:\David\Praksa\Recipe\Recipe.Repository\bin\Debug\net8.0\Recipe.Repository.deps.json
+C:\David\Praksa\Recipe\Recipe.Repository\bin\Debug\net8.0\Recipe.Repository.dll
+C:\David\Praksa\Recipe\Recipe.Repository\bin\Debug\net8.0\Recipe.Repository.pdb
+C:\David\Praksa\Recipe\Recipe.Repository\bin\Debug\net8.0\Recipe.Model.dll
+C:\David\Praksa\Recipe\Recipe.Repository\bin\Debug\net8.0\Recipe.Repository.Common.dll
+C:\David\Praksa\Recipe\Recipe.Repository\bin\Debug\net8.0\Recipe.Model.pdb
+C:\David\Praksa\Recipe\Recipe.Repository\bin\Debug\net8.0\Recipe.Repository.Common.pdb
+C:\David\Praksa\Recipe\Recipe.Repository\obj\Debug\net8.0\Recipe.R.D0E3C623.Up2Date
+C:\David\Praksa\Recipe\Recipe.Repository\obj\Debug\net8.0\Recipe.Repository.dll
+C:\David\Praksa\Recipe\Recipe.Repository\obj\Debug\net8.0\refint\Recipe.Repository.dll
+C:\David\Praksa\Recipe\Recipe.Repository\obj\Debug\net8.0\Recipe.Repository.pdb
+C:\David\Praksa\Recipe\Recipe.Repository\obj\Debug\net8.0\ref\Recipe.Repository.dll
+>>>>>>> ee6675f (Nadograđen program i dodate nove funkcionalnosti)

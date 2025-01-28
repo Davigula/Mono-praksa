@@ -1,224 +1,109 @@
-using System;
-using System.Collections.Generic;
-using System.Data;
-using Microsoft.AspNetCore.Http.HttpResults;
+using Recipe.API.Service.Common;
 using Microsoft.AspNetCore.Mvc;
-using Npgsql;
-using static Microsoft.AspNetCore.Mvc.ModelBinding.ModelStateDictionary;
-
-
+using Recipe.Model;
 
 namespace Recipe.API.Controllers
 {
-
     [ApiController]
     [Route("[controller]")]
     public class WeatherForecastController : ControllerBase
     {
-        
+        //private readonly WeatherForecastService _service;
+        private readonly IService<WeatherForecast> _service;
 
-        
-        private const string CONNECTION_STRING = "Host=localhost:5432;" +
-            "Username=postgres;" +
-            "Password=1234;" +
-            "Database=postgres";
-
-        private static readonly string[] Summaries = new[]
+        public WeatherForecastController(IService<WeatherForecast> servo)
         {
-            "Freezing", "Bracing", "Chilly", "Cool", "Mild", "Warm", "Balmy", "Hot", "Sweltering", "Scorching"
-        };
+            // Ruèno kreiranje instance WeatherForecastService bez DI
+            //var repository = new WeatherForecastRepository();
+            //_weatherForecastService = new WeatherForecastService(repository);
 
-        //public IEnumerable<WeatherForecast> list = Enumerable.Range(1, 5).Select(index => new WeatherForecast
-        //{
-        //    Date = DateOnly.FromDateTime(DateTime.Now.AddDays(index)),
-        //    TemperatureC = Random.Shared.Next(-20, 55),
-        //    Summary = Summaries[Random.Shared.Next(Summaries.Length)]
-        //})
-        //    .ToArray();
-        private static List<WeatherForecast> list = 
-            [];
-
-        const string TABLE_NAME = "\"WeatherForecasts\"";
-
-        // select po id za to služi private 
-
-
-        private readonly ILogger<WeatherForecastController> _logger;
-
-        public WeatherForecastController(ILogger<WeatherForecastController> logger)
-        {
-            _logger = logger;
+            _service = servo;
         }
 
         [HttpGet("GetWeatherForecast")]
         public IActionResult Get()
         {
-            string commandText = $"SELECT id, date, temperaturec, summary FROM {TABLE_NAME}";
-            try { 
-                using(var connection = new NpgsqlConnection(CONNECTION_STRING)) {
-                    using var command = new NpgsqlCommand(commandText, connection);
-                    connection.Open();
-                    using(var reader = command.ExecuteReader()) {
-                        var weatherList = new List<WeatherForecast>();
-                        while (reader.Read()) {
-                            var weather = new WeatherForecast
-                            {
-                                Id = reader.GetGuid(reader.GetOrdinal("id")),
-                                TemperatureC = reader.GetInt32(reader.GetOrdinal("temperaturec")),
-                                Summary = reader.GetString(reader.GetOrdinal("summary"))
-                                //Date = reader.GetString(ToString( reader.GetOrdinal("id"))),
-                            };
-                            weatherList.Add(weather);
-                        }
-                        if(weatherList.Count > 0)
-                        {
-                            return Ok(weatherList);
-                        }
-                        else
-                        {
-                            return BadRequest("No records found");
-                        }
-                    
-                    }
-                
-                }
-            
-            }catch(Exception ex) {
+            try
+            {
+                var forecasts = _service.Get();
+                return Ok(forecasts);
+            }
+            catch (Exception ex)
+            {
                 return BadRequest(ex.Message);
             }
         }
+
         [HttpGet("GetAnotherForecast/{id}")]
-        //[Route("getbyss/{ss}")]
         public IActionResult GetById(Guid id)
         {
-            string commandText = $"SELECT id, date, temperaturec, summary FROM {TABLE_NAME} WHERE id=@id";
             try
             {
-                using (var connection = new NpgsqlConnection(CONNECTION_STRING))
+                var forecast = _service.GetById(id);
+                if (forecast == null)
                 {
-                    using var command = new NpgsqlCommand(commandText, connection);
-                    connection.Open();
-                    command.Parameters.AddWithValue("id", id);
-
-                    using (var Reader = command.ExecuteReader()){
-                        if (Reader.Read()) {
-                            WeatherForecast weather = new WeatherForecast{
-                                Id = Reader.GetGuid(Reader.GetOrdinal("id")),
-                                //Date = Reader.GetOrdinal("date")
-                                //Date = Reader.GetString(Reader.GetOrdinal("date").ToString()),
-                                TemperatureC = Reader.GetInt32(Reader.GetOrdinal("temperaturec")),
-                                Summary = Reader.GetString(Reader.GetOrdinal("summary"))
-
-
-                            };
-                            return Ok(weather);
-                        }
-                        else
-                        {
-                            return BadRequest("Nema takvog elementa!");
-                        }
-                    }
+                    return NotFound("Forecast not found with the provided ID.");
                 }
-            }catch(Exception ex)
+                return Ok(forecast);
+            }
+            catch (Exception ex)
             {
                 return BadRequest(ex.Message);
             }
-            
-                
-            
-            
         }
 
         [HttpPost]
-        public IActionResult Post(WeatherForecast weather )
+        public IActionResult Post(WeatherForecast weather)
         {
-
-            string commandText = $"INSERT INTO {TABLE_NAME} (id, date, temperaturec, summary) VALUES (@id, @date, @tempC, @summ) ";
             try
             {
-                using (var connection = new NpgsqlConnection(CONNECTION_STRING))
+                if (weather != null)
                 {
-                    using var command = new NpgsqlCommand(commandText, connection);
-                        
-                    connection.Open();
-
-                    command.Parameters.AddWithValue("id", NpgsqlTypes.NpgsqlDbType.Uuid, Guid.NewGuid());
-                    command.Parameters.AddWithValue("date", weather.Date);
-                    command.Parameters.AddWithValue("tempC", weather.TemperatureC);
-                    command.Parameters.AddWithValue("summ", NpgsqlTypes.NpgsqlDbType.Varchar, weather.Summary);
-
-                    var numberOfCommits = command.ExecuteNonQuery();
-                    connection.Close();
-
-                    if (numberOfCommits > 0)
-                    {
-
-                        return Ok("ALl good.");
-                    }
-                    else
-                    {
-                        return BadRequest("Didn't enter commit");
-                    }
-
-                    }
+                    _service.Post(weather);
+                    return Ok("Weather forecast added successfully.");
                 }
-                catch (Exception ex)
-                {
-                    return BadRequest(ex.Message);
-                }
-               
+                return BadRequest("Failed to add weather forecast.");
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
         }
 
-        //[HttpPut("{id}")]
-        //public IActionResult Put(Guid id, WeatherForecast updatedWeather)
-        //{
-        //    var getResult = GetById(id);
-        //    if(getResult)
+        [HttpPut("{id}")]
+        public IActionResult Put(Guid id, WeatherForecast updatedWeather)
+        {
+            try
+            {
+                if (updatedWeather != null)
+                {
+                    _service.Put(id, updatedWeather);
+                    return Ok("Weather forecast updated successfully.");
+                }
+                return NotFound("Weather forecast not found with the provided ID.");
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
 
-        //}
-
-        [HttpDelete]
+        [HttpDelete("{id}")]
         public IActionResult Delete(Guid id)
         {
-
-            var getResult = GetById(id);
-            if(getResult is NotFoundResult)
-            {
-                return NotFound("Not found with that ID");
-            }
-
-            string commandText = $"DELETE FROM {TABLE_NAME} WHERE ID=(@id)";
-
             try
-            { 
-                using (var connection = new NpgsqlConnection(CONNECTION_STRING)){ 
-                    using var command = new NpgsqlCommand(commandText, connection);
-                    connection.Open();
-                    command.Parameters.AddWithValue("id", id);
-                    var numberOfCommits = command.ExecuteNonQuery();
-
-                    if (numberOfCommits < 1)
-                    {
-                        return BadRequest("Data isnt deleted");
-                    }else{
-
-                        return Ok("Data deleted successfully!");
-                    }
-                
-                }
-            }
-            catch(Exception ex)
             {
-                return BadRequest("jaoooo");
+                if (id != Guid.Empty)
+                {
+                    _service.Delete(id);
+                    return Ok("Weather forecast deleted successfully.");
+                }
+                return NotFound("Weather forecast not found with the provided ID.");
             }
-            
-            
-            
-            
-
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
         }
-
-
-
     }
 }

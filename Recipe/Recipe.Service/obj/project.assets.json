@@ -1,11 +1,62 @@
 {
   "version": 3,
   "targets": {
-    "net8.0": {}
+    "net8.0": {
+      "Recipe.Model/1.0.0": {
+        "type": "project",
+        "framework": ".NETCoreApp,Version=v8.0",
+        "compile": {
+          "bin/placeholder/Recipe.Model.dll": {}
+        },
+        "runtime": {
+          "bin/placeholder/Recipe.Model.dll": {}
+        }
+      },
+      "Recipe.Repository.Common/1.0.0": {
+        "type": "project",
+        "framework": ".NETCoreApp,Version=v8.0",
+        "compile": {
+          "bin/placeholder/Recipe.Repository.Common.dll": {}
+        },
+        "runtime": {
+          "bin/placeholder/Recipe.Repository.Common.dll": {}
+        }
+      },
+      "Recipe.Service.Common/1.0.0": {
+        "type": "project",
+        "framework": ".NETCoreApp,Version=v8.0",
+        "compile": {
+          "bin/placeholder/Recipe.Service.Common.dll": {}
+        },
+        "runtime": {
+          "bin/placeholder/Recipe.Service.Common.dll": {}
+        }
+      }
+    }
   },
-  "libraries": {},
+  "libraries": {
+    "Recipe.Model/1.0.0": {
+      "type": "project",
+      "path": "../Recipe.Model/Recipe.Model.csproj",
+      "msbuildProject": "../Recipe.Model/Recipe.Model.csproj"
+    },
+    "Recipe.Repository.Common/1.0.0": {
+      "type": "project",
+      "path": "../Recipe.Repository.Common/Recipe.Repository.Common.csproj",
+      "msbuildProject": "../Recipe.Repository.Common/Recipe.Repository.Common.csproj"
+    },
+    "Recipe.Service.Common/1.0.0": {
+      "type": "project",
+      "path": "../Recipe.Service.Common/Recipe.Service.Common.csproj",
+      "msbuildProject": "../Recipe.Service.Common/Recipe.Service.Common.csproj"
+    }
+  },
   "projectFileDependencyGroups": {
-    "net8.0": []
+    "net8.0": [
+      "Recipe.Model >= 1.0.0",
+      "Recipe.Repository.Common >= 1.0.0",
+      "Recipe.Service.Common >= 1.0.0"
+    ]
   },
   "packageFolders": {
     "C:\\Users\\David\\.nuget\\packages\\": {},
@@ -38,7 +89,17 @@
       "frameworks": {
         "net8.0": {
           "targetAlias": "net8.0",
-          "projectReferences": {}
+          "projectReferences": {
+            "C:\\David\\Praksa\\Recipe\\Recipe.Model\\Recipe.Model.csproj": {
+              "projectPath": "C:\\David\\Praksa\\Recipe\\Recipe.Model\\Recipe.Model.csproj"
+            },
+            "C:\\David\\Praksa\\Recipe\\Recipe.Repository.Common\\Recipe.Repository.Common.csproj": {
+              "projectPath": "C:\\David\\Praksa\\Recipe\\Recipe.Repository.Common\\Recipe.Repository.Common.csproj"
+            },
+            "C:\\David\\Praksa\\Recipe\\Recipe.Service.Common\\Recipe.Service.Common.csproj": {
+              "projectPath": "C:\\David\\Praksa\\Recipe\\Recipe.Service.Common\\Recipe.Service.Common.csproj"
+            }
+          }
         }
       },
       "warningProperties": {

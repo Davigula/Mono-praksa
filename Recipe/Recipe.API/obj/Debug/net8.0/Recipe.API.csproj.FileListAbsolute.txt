@@ -37,3 +37,15 @@ C:\David\Praksa\Recipe\Recipe.API\obj\Debug\net8.0\refint\Recipe.API.dll
 C:\David\Praksa\Recipe\Recipe.API\obj\Debug\net8.0\Recipe.API.pdb
 C:\David\Praksa\Recipe\Recipe.API\obj\Debug\net8.0\Recipe.API.genruntimeconfig.cache
 C:\David\Praksa\Recipe\Recipe.API\obj\Debug\net8.0\ref\Recipe.API.dll
+C:\David\Praksa\Recipe\Recipe.API\bin\Debug\net8.0\Autofac.dll
+C:\David\Praksa\Recipe\Recipe.API\bin\Debug\net8.0\Autofac.Extensions.DependencyInjection.dll
+C:\David\Praksa\Recipe\Recipe.API\bin\Debug\net8.0\Recipe.Model.dll
+C:\David\Praksa\Recipe\Recipe.API\bin\Debug\net8.0\Recipe.Repository.Common.dll
+C:\David\Praksa\Recipe\Recipe.API\bin\Debug\net8.0\Recipe.Repository.dll
+C:\David\Praksa\Recipe\Recipe.API\bin\Debug\net8.0\Recipe.Service.Common.dll
+C:\David\Praksa\Recipe\Recipe.API\bin\Debug\net8.0\Recipe.Service.dll
+C:\David\Praksa\Recipe\Recipe.API\bin\Debug\net8.0\Recipe.Model.pdb
+C:\David\Praksa\Recipe\Recipe.API\bin\Debug\net8.0\Recipe.Repository.Common.pdb
+C:\David\Praksa\Recipe\Recipe.API\bin\Debug\net8.0\Recipe.Repository.pdb
+C:\David\Praksa\Recipe\Recipe.API\bin\Debug\net8.0\Recipe.Service.Common.pdb
+C:\David\Praksa\Recipe\Recipe.API\bin\Debug\net8.0\Recipe.Service.pdb
