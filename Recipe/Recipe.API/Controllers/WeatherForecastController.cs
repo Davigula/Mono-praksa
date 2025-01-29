@@ -3,7 +3,6 @@ using Microsoft.AspNetCore.Mvc;
 using Recipe.Model;
 using Recipe.Common;
 
-
 namespace Recipe.API.Controllers
 {
     [ApiController]
@@ -11,22 +10,17 @@ namespace Recipe.API.Controllers
     public class WeatherForecastController : ControllerBase
     {
         private readonly IService<WeatherForecast> ServiceObject;
-        
+
         private readonly Sorting Sorting;
         private readonly Pagging Pagging;
-        
+
         public WeatherForecastController(IService<WeatherForecast> service)
         {
-            // Ruèno kreiranje instance WeatherForecastService bez DI
-            //var repository = new WeatherForecastRepository();
-            //_weatherForecastService = new WeatherForecastService(repository);
-
             ServiceObject = service;
-            
         }
 
         [HttpGet("GetWeatherForecast")]
-        public IActionResult Get(string orderBy = "id", string sortOrder  ="ASC", int rpp = 10, int pageNumber = 1, string summary = "", int temperature = 17)
+        public IActionResult Get(string orderBy = "id", string sortOrder = "ASC", int rpp = 10, int pageNumber = 1, string summary = "", int temperature = 11)
         {
             try
             {
@@ -39,13 +33,11 @@ namespace Recipe.API.Controllers
                 {
                     RecordPerPage = rpp,
                     PageNumber = pageNumber
-
                 };
-                AddFilter filter = new AddFilter
+                Filter filter = new Filter
                 {
                     Summary = summary,
                     TemperatureC = temperature
-
                 };
                 var forecasts = ServiceObject.Get(sorting, pagging, filter);
                 return Ok(forecasts);

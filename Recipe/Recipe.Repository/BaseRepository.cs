@@ -5,6 +5,7 @@ namespace Recipe.API.Repository
 {
     public abstract class BaseRepository<T> : IRepository<T>
     {
+        //koja je razlika između ovog i interface-a
         protected readonly string ConnectionString;
         protected readonly string TableName;
 
@@ -14,10 +15,14 @@ namespace Recipe.API.Repository
             TableName = tableName;
         }
 
-        public abstract List<T> Get(Sorting sorting, Pagging pagging, AddFilter filter);
+        public abstract List<T> Get(Sorting sorting, Pagging pagging, Filter filter);
+
         public abstract T GetById(Guid id);
+
         public abstract bool Insert(T entity);
+
         public abstract bool Update(Guid id, T entity);
+
         public abstract bool Delete(Guid id);
     }
 }

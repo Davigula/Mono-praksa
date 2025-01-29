@@ -59,7 +59,7 @@
             "schema": {
               "type": "integer",
               "format": "int32",
-              "default": 17
+              "default": 11
             }
           }
         ],

@@ -7,16 +7,13 @@ namespace Recipe.Service
     public abstract class BaseService<T> : IService<T>
     {
         private readonly IRepository<T> _repository;
-        
 
         protected BaseService(IRepository<T> repository)
         {
             _repository = repository;
-            
         }
-        
-        
-        public virtual List<T> Get(Sorting sorting, Pagging pagging, AddFilter filter)
+
+        public virtual List<T> Get(Sorting sorting, Pagging pagging, Filter filter)
         {
             return _repository.Get(sorting, pagging, filter);
         }

@@ -1,11 +1,7 @@
-﻿using Recipe.API.Service.Common;
-using Recipe.API.Repository;
-using System;
-using System.Collections.Generic;
-using Recipe.API.Repository.Common;
+﻿using Recipe.API.Repository.Common;
+using Recipe.Common;
 using Recipe.Model;
 using Recipe.Service;
-using Recipe.Common;
 
 namespace Recipe.API.Service
 {
@@ -15,17 +11,13 @@ namespace Recipe.API.Service
         private readonly Sorting Sorting;
         private readonly Pagging Pagging;
 
-        
         public WeatherForecastService(IRepository<WeatherForecast> repository) : base(repository)
         {
             _repository = repository;
-            
         }
 
-        // Dodatna logika specifična za WeatherForecast, ako je potrebna
         public override bool Post(WeatherForecast entity)
         {
-            // Možeš dodati dodatnu validaciju prije poziva u bazu
             if (string.IsNullOrEmpty(entity.Summary))
             {
                 throw new ArgumentException("Summary cannot be empty");
@@ -34,10 +26,15 @@ namespace Recipe.API.Service
             return base.Post(entity);
         }
 
-        //public override bool Update(Guid id, WeatherForecast entity)
-        //{
-        //    if(e)
-        //}
+        public override bool Delete(Guid id)
+        {
+            var entity = _repository.GetById(id);
+            if(entity != null)
+            {
+                throw new Exception("No entity with that id");
+            }
+            return base.Delete(id);
+        }
+
     }
 }
-

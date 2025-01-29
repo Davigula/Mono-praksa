@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Security.Cryptography;
-using System.Text;
+﻿using System.Text;
 using Npgsql;
 using Recipe.API.Repository.Common;
 using Recipe.Common;
@@ -10,83 +6,69 @@ using Recipe.Model;
 
 namespace Recipe.API.Repository
 {
-    public class WeatherForecastRepository : BaseRepository<WeatherForecast>
+    public class WeatherForecastRepository : IRepository<WeatherForecast>
     {
-        public WeatherForecastRepository() : base(
-            "Host=localhost:5432;Username=postgres;Password=1234;Database=postgres",
-            "\"WeatherForecasts\"")
-        {
-        }
+        protected readonly string ConnectionString = "Host=localhost:5432;Username=postgres;Password=1234;Database=postgres";
+            
+        protected readonly string TableName = "\"WeatherForecasts\"";
 
-        public void ApplyPagging(Pagging pagging, StringBuilder query, NpgsqlCommand command)
-        {
+        
+        
 
+        private void ApplyPagging(Pagging pagging, StringBuilder query, NpgsqlCommand command)
+        {
             pagging.PageNumber = pagging.PageNumber > 0 ? pagging.PageNumber : 1;
-            pagging.RecordPerPage = pagging.RecordPerPage > 0 ? pagging.PageNumber : 10 ;
+            pagging.RecordPerPage = pagging.RecordPerPage > 0 ? pagging.PageNumber : 10;
 
-            query.Append($" OFFSET @offset LIMIT @rpp ");                ;
-            command.Parameters.AddWithValue("offset", (pagging.PageNumber - 1) * pagging.RecordPerPage);
+            query.Append($" LIMIT @rpp OFFSET ((@offset - 1) * @rpp)"); ;
+            command.Parameters.AddWithValue("offset", pagging.PageNumber);
             command.Parameters.AddWithValue("rpp", pagging.RecordPerPage);
         }
 
-        public void ApplyFilter(AddFilter filter, StringBuilder query, NpgsqlCommand command)
+        private void ApplyFilter(Filter filter, StringBuilder query, NpgsqlCommand command)
         {
-            query.Append(" WHERE 1=1 ");
-            if(!string.IsNullOrWhiteSpace(filter.Summary))
-            { 
-                query.Append(" AND summary = @summary ");
+            query.Append(" WHERE 1=1");
+            if (!string.IsNullOrWhiteSpace(filter.Summary))
+            {
+                query.Append(" AND summary = @summary");
                 command.Parameters.AddWithValue("summary", filter.Summary);
             }
             if (filter.TemperatureC != 0)
             {
-                query.Append(" and temperaturec = @tempc ");
+                query.Append(" AND temperaturec = @tempc");
                 command.Parameters.AddWithValue("tempc", filter.TemperatureC);
             }
-
-                       
         }
 
-
-
-        public override List<WeatherForecast> Get(Sorting sorting, Pagging pagging, AddFilter filter)
+        public  List<WeatherForecast> Get(Sorting sorting, Pagging pagging, Filter filter)
         {
             NpgsqlCommand command = new NpgsqlCommand();
-            //string commandText = $"SELECT id, date, temperaturec, summary FROM {TableName}";
-            StringBuilder query = new StringBuilder($"SELECT id, date, temperaturec, summary FROM {TableName} ");
-            //if (sorting == null) throw new Exception("There is no sorting");
-            //if (pagging == null) throw new Exception("There is no pagging");
+            StringBuilder query = new StringBuilder($"SELECT id, date, temperaturec, summary FROM \"WeatherForecasts\"");
             if (filter == null)
             {
                 throw new Exception("Nema filtera");
-
             }
-            ApplyFilter(filter, query, command);
-            
+            //ApplyFilter(filter, query, command);
+
             if (sorting != null)
             {
                 sorting.OrderBy = string.IsNullOrWhiteSpace(sorting.OrderBy) ? "id" : sorting.OrderBy;
                 sorting.SortOrder = string.IsNullOrWhiteSpace(sorting.SortOrder) ? "ASC" : "DESC";
-                query.Append($" ORDER BY {sorting.OrderBy ?? "id "}  {sorting.SortOrder ?? "ASC "}  ");
+                query.Append($" ORDER BY {sorting.OrderBy ?? "id "} {sorting.SortOrder ?? "ASC"}");
             }
-            
+
             if (pagging != null)
             {
-                if(sorting == null)
+                if (sorting == null)
                 {
                     throw new Exception("Nema sortinga");
                 }
-                ApplyPagging(pagging, query, command);
+                //ApplyPagging(pagging, query, command);
             }
-            
 
-
-
-
-            //myStringBuilder.Append($"OFFSET {(Pagging.PageNumber-1)*Pagging.RecordPerPage} ROWS FETCH NEXT {Pagging.RecordPerPage} ROWS ONLY");
-            //myStringBuilder.Append( $"WHERE temperaturec = {temperatureC}");
 
             var weatherList = new List<WeatherForecast>();
-
+            Console.WriteLine(query.ToString());
             using (var connection = new NpgsqlConnection(ConnectionString))
             using (command = new NpgsqlCommand(query.ToString(), connection))
             {
@@ -106,7 +88,7 @@ namespace Recipe.API.Repository
             return weatherList;
         }
 
-        public override WeatherForecast GetById(Guid id)
+        public  WeatherForecast GetById(Guid id)
         {
             string commandText = $"SELECT id, date, temperaturec, summary FROM {TableName} WHERE id=@id";
             using (var connection = new NpgsqlConnection(ConnectionString))
@@ -128,7 +110,7 @@ namespace Recipe.API.Repository
             return null;
         }
 
-        public override bool Insert(WeatherForecast weather)
+        public  bool Insert(WeatherForecast weather)
         {
             string commandText = $"INSERT INTO {TableName} (id, date, temperaturec, summary) VALUES (@id, @date, @tempC, @summ)";
             using (var connection = new NpgsqlConnection(ConnectionString))
@@ -144,7 +126,7 @@ namespace Recipe.API.Repository
             }
         }
 
-        public override bool Update(Guid id, WeatherForecast updatedWeather)
+        public  bool Update(Guid id, WeatherForecast updatedWeather)
         {
             string commandText = $"UPDATE {TableName} SET temperaturec = @tempC, summary = @summ WHERE id=@id";
             using (var connection = new NpgsqlConnection(ConnectionString))
@@ -159,7 +141,7 @@ namespace Recipe.API.Repository
             }
         }
 
-        public override bool Delete(Guid id)
+        public  bool Delete(Guid id)
         {
             string commandText = $"DELETE FROM {TableName} WHERE id=@id";
             using (var connection = new NpgsqlConnection(ConnectionString))
@@ -173,4 +155,3 @@ namespace Recipe.API.Repository
         }
     }
 }
-
