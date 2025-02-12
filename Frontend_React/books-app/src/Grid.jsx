@@ -36,20 +36,38 @@ export default function Grid() {
 	}
 
 	function handleUpdate(updatedWeatherForecast) {
-		const updatedWeatherForecasts = weatherForecasts.map((weatherForecast) =>
-			weatherForecast.id === updatedWeatherForecast.id
-				? updatedWeatherForecast
-				: weatherForecast
-		);
-		setWeatherForecasts(updatedWeatherForecasts);
-		setEditWeatherForecast(null);
+		axios
+			.put(
+				`http://localhost:5181/WeatherForecast/${updatedWeatherForecast.id}`,
+				updatedWeatherForecast
+			)
+			.then(() => {
+				const updatedWeatherForecasts = weatherForecasts.map(
+					(weatherForecast) =>
+						weatherForecast.id === updatedWeatherForecast.id
+							? updatedWeatherForecast
+							: weatherForecast
+				);
+				setWeatherForecasts(updatedWeatherForecasts);
+				setEditWeatherForecast(null);
+			})
+			.catch((error) => {
+				setError("Failed to update weather forecast");
+			});
 	}
 
 	function removeWeatherForecast(id) {
-		const updatedWeatherForecasts = weatherForecasts.filter(
-			(weatherForecast) => weatherForecast.id !== id
-		);
-		setWeatherForecasts(updatedWeatherForecasts);
+		axios
+			.delete(`http://localhost:5181/WeatherForecast/${id}`)
+			.then(() => {
+				const updatedWeatherForecasts = weatherForecasts.filter(
+					(weatherForecast) => weatherForecast.id !== id
+				);
+				setWeatherForecasts(updatedWeatherForecasts);
+			})
+			.catch((error) => {
+				setError("Failed to delete weather forecast");
+			});
 	}
 
 	return (

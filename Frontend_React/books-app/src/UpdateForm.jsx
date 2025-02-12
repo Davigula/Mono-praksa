@@ -37,7 +37,7 @@ export default function UpdateForm({ weatherForecast, onUpdate }) {
 	return (
 		<>
 			<form className="add">
-				<label htmlFor="title">Title:</label>
+				<label htmlFor="temperatureC">TemperatureC:</label>
 				<input
 					type="text"
 					name="temperatureC"
@@ -45,6 +45,7 @@ export default function UpdateForm({ weatherForecast, onUpdate }) {
 					value={formData.temperatureC}
 					onChange={handleChange}
 				></input>
+				<label htmlFor="temperatureF">TemperatureF:</label>
 				<input
 					type="text"
 					name="temperatureF"
@@ -52,11 +53,11 @@ export default function UpdateForm({ weatherForecast, onUpdate }) {
 					value={formData.temperatureF}
 					onChange={handleChange}
 				></input>
-				<label htmlFor="description">Description:</label>
+				<label htmlFor="summary">Summary:</label>
 				<textarea
 					name="summary"
 					id="summary"
-					value={formData.temperatureF}
+					value={formData.summary}
 					onChange={handleChange}
 				></textarea>
 				<div>

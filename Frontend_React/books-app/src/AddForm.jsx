@@ -1,61 +1,62 @@
+import axios from "axios";
 import { useState } from "react";
 import Button from "./Button";
 
-export default function AddForm() {
+export default function AddForm({ onAdd }) {
 	const [formData, setFormData] = useState({
-		title: "",
-		description: "",
+		temperatureC: "",
+		temperatureF: "",
+		summary: "",
+		id: 0,
 	});
 
-	function findMaxId(movies) {
-		let max = 0;
-		movies.forEach((p) => {
-			if (p.id > max) {
-				max = p.id;
-			}
-		});
-		return max;
-	}
-
 	function handleChange(e) {
+		const { name, value } = e.target;
 		setFormData((prevData) => ({
 			...prevData,
-			[e.target.name]: e.target.value,
+			[name]: value,
 		}));
 	}
 
 	function addTask() {
-		let movieList = JSON.parse(localStorage.getItem("movies")) || [];
-		const movie = {
-			title: formData.title,
-			description: formData.description,
-			id: findMaxId(movieList) + 1,
-		};
-		const updateMovies = [...movieList, movie];
-
-		localStorage.setItem("movies", JSON.stringify(updateMovies));
-
-		setFormData({
-			title: "",
-			description: "",
-		});
+		axios
+			.post("http://localhost:5181/WeatherForecast", formData)
+			.then((response) => {
+				onAdd(response.data);
+				setFormData({
+					temperatureC: "",
+					temperatureF: "",
+					summary: "",
+				});
+			})
+			.catch((error) => {
+				console.error("Failed to add weather forecast:", error);
+			});
 	}
 
 	return (
 		<form className="add">
-			<label htmlFor="title">Title:</label>
+			<label htmlFor="temperatureC">TemperatureC:</label>
 			<input
 				type="text"
-				name="title"
-				id="title"
-				value={formData.title}
+				name="temperatureC"
+				id="tempC"
+				value={formData.temperatureC}
 				onChange={handleChange}
 			/>
-			<label htmlFor="description">Description:</label>
+			<label htmlFor="temperatureF">TemperatureF:</label>
+			<input
+				type="text"
+				name="temperatureF"
+				id="tempF"
+				value={formData.temperatureF}
+				onChange={handleChange}
+			/>
+			<label htmlFor="summary">Summary:</label>
 			<textarea
-				name="description"
-				id="description"
-				value={formData.description}
+				name="summary"
+				id="summary"
+				value={formData.summary}
 				onChange={handleChange}
 			/>
 			<div>
