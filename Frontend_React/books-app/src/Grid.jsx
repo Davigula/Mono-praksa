@@ -1,41 +1,98 @@
+import axios from "axios";
+import { useEffect, useState } from "react";
 import Button from "./Button";
-import { useState } from "react";
+import UpdateForm from "./UpdateForm";
 
 export default function Grid() {
-  const [movies, setMovies] = useState(() => {
-    return JSON.parse(localStorage.getItem("movies")) || [];
-  });
+	const [weatherForecasts, setWeatherForecasts] = useState([]);
+	const [loading, setLoading] = useState(true);
+	const [error, setError] = useState(null);
+	const [editWeatherForecast, setEditWeatherForecast] = useState(null);
 
-  function removeMovie(id) {
-    const updatedMovies = movies.filter((movie) => movie.id !== id);
-    setMovies(updatedMovies);
-    localStorage.setItem("movies", JSON.stringify(updatedMovies));
-  }
+	useEffect(() => {
+		axios
+			.get("http://localhost:5181/WeatherForecast")
+			.then((response) => {
+				setWeatherForecasts(response.data);
+				// localStorage.setItem("WeatherForecasts", JSON.stringify(response.data));
+				setLoading(false);
+			})
+			.catch((error) => {
+				debugger;
+				setError("Failed to fetch data");
+				setLoading(false);
+			});
+	}, []);
 
-  return (
-    <table className="movie-table">
-      <thead>
-        <tr>
-          <th>Title</th>
-          <th>Description</th>
-          <th>Actions</th>
-        </tr>
-      </thead>
-      <tbody>
-        {movies.map((movie) => (
-          <tr key={movie.id}>
-            <td>{movie.title}</td>
-            <td>{movie.description}</td>
-            <td>
-              <Button button={"update"} />
-              <Button
-                button={"delete"}
-                onButtonClicked={() => removeMovie(movie.id)}
-              />
-            </td>
-          </tr>
-        ))}
-      </tbody>
-    </table>
-  );
+	if (loading) return <p>Loading ...</p>;
+	if (error) return <p>{error}</p>;
+
+	function updateWeatherForecast(id) {
+		// stavi u edit formu, tako da jednom kad u edit formi stisnem gumb edit, ažurira mi se
+		const weatherForecastToEdit = weatherForecasts.find(
+			(weatherForecast) => weatherForecast.id === id
+		);
+		setEditWeatherForecast(weatherForecastToEdit);
+	}
+
+	function handleUpdate(updatedWeatherForecast) {
+		const updatedWeatherForecasts = weatherForecasts.map((weatherForecast) =>
+			weatherForecast.id === updatedWeatherForecast.id
+				? updatedWeatherForecast
+				: weatherForecast
+		);
+		setWeatherForecasts(updatedWeatherForecasts);
+		setEditWeatherForecast(null);
+	}
+
+	function removeWeatherForecast(id) {
+		const updatedWeatherForecasts = weatherForecasts.filter(
+			(weatherForecast) => weatherForecast.id !== id
+		);
+		setWeatherForecasts(updatedWeatherForecasts);
+	}
+
+	return (
+		<>
+			{editWeatherForecast && (
+				<UpdateForm
+					weatherForecast={editWeatherForecast}
+					onUpdate={handleUpdate}
+				/>
+			)}
+			<table className="WeatherForecast-table">
+				<thead>
+					<tr>
+						<th>TemperatureC</th>
+						<th>TemperatureF</th>
+						<th>Summary</th>
+						<th>Actions</th>
+					</tr>
+				</thead>
+				<tbody>
+					{weatherForecasts.map((weatherForecast) => (
+						<tr key={weatherForecast.id}>
+							<td>{weatherForecast.temperatureC}</td>
+							<td>{weatherForecast.temperatureF}</td>
+							<td>{weatherForecast.summary}</td>
+							<td>
+								<Button
+									button={"update"}
+									onButtonClicked={() =>
+										updateWeatherForecast(weatherForecast.id)
+									}
+								/>
+								<Button
+									button={"delete"}
+									onButtonClicked={() =>
+										removeWeatherForecast(weatherForecast.id)
+									}
+								/>
+							</td>
+						</tr>
+					))}
+				</tbody>
+			</table>
+		</>
+	);
 }
