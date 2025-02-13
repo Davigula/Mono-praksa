@@ -3,8 +3,7 @@ import { useEffect, useState } from "react";
 import Button from "./Button";
 import UpdateForm from "./UpdateForm";
 
-export default function Grid() {
-	const [weatherForecasts, setWeatherForecasts] = useState([]);
+export default function Grid({ forecasts, onRefresh }) {
 	const [loading, setLoading] = useState(true);
 	const [error, setError] = useState(null);
 	const [editWeatherForecast, setEditWeatherForecast] = useState(null);
@@ -13,8 +12,7 @@ export default function Grid() {
 		axios
 			.get("http://localhost:5181/WeatherForecast")
 			.then((response) => {
-				setWeatherForecasts(response.data);
-				// localStorage.setItem("WeatherForecasts", JSON.stringify(response.data));
+				onRefresh(response.data);
 				setLoading(false);
 			})
 			.catch((error) => {
@@ -29,26 +27,26 @@ export default function Grid() {
 
 	function updateWeatherForecast(id) {
 		// stavi u edit formu, tako da jednom kad u edit formi stisnem gumb edit, ažurira mi se
-		const weatherForecastToEdit = weatherForecasts.find(
+		const weatherForecastToEdit = forecasts.find(
 			(weatherForecast) => weatherForecast.id === id
 		);
 		setEditWeatherForecast(weatherForecastToEdit);
 	}
 
-	function handleUpdate(updatedWeatherForecast) {
-		axios
+	async function handleUpdate(updatedWeatherForecast) {
+		await axios
+
 			.put(
 				`http://localhost:5181/WeatherForecast/${updatedWeatherForecast.id}`,
 				updatedWeatherForecast
 			)
 			.then(() => {
-				const updatedWeatherForecasts = weatherForecasts.map(
-					(weatherForecast) =>
-						weatherForecast.id === updatedWeatherForecast.id
-							? updatedWeatherForecast
-							: weatherForecast
+				const updatedWeatherForecasts = forecasts.map((weatherForecast) =>
+					weatherForecast.id === updatedWeatherForecast.id
+						? updatedWeatherForecast
+						: weatherForecast
 				);
-				setWeatherForecasts(updatedWeatherForecasts);
+				onRefresh(updatedWeatherForecasts);
 				setEditWeatherForecast(null);
 			})
 			.catch((error) => {
@@ -56,14 +54,15 @@ export default function Grid() {
 			});
 	}
 
-	function removeWeatherForecast(id) {
-		axios
+	async function removeWeatherForecast(id) {
+		await axios
+
 			.delete(`http://localhost:5181/WeatherForecast/${id}`)
 			.then(() => {
-				const updatedWeatherForecasts = weatherForecasts.filter(
+				const updatedWeatherForecasts = forecasts.filter(
 					(weatherForecast) => weatherForecast.id !== id
 				);
-				setWeatherForecasts(updatedWeatherForecasts);
+				onRefresh(updatedWeatherForecasts);
 			})
 			.catch((error) => {
 				setError("Failed to delete weather forecast");
@@ -88,7 +87,7 @@ export default function Grid() {
 					</tr>
 				</thead>
 				<tbody>
-					{weatherForecasts.map((weatherForecast) => (
+					{forecasts.map((weatherForecast) => (
 						<tr key={weatherForecast.id}>
 							<td>{weatherForecast.temperatureC}</td>
 							<td>{weatherForecast.temperatureF}</td>

@@ -1,4 +1,3 @@
-import axios from "axios";
 import { useState } from "react";
 import Button from "./Button";
 
@@ -7,7 +6,6 @@ export default function AddForm({ onAdd }) {
 		temperatureC: "",
 		temperatureF: "",
 		summary: "",
-		id: 0,
 	});
 
 	function handleChange(e) {
@@ -18,24 +16,18 @@ export default function AddForm({ onAdd }) {
 		}));
 	}
 
-	function addTask() {
-		axios
-			.post("http://localhost:5181/WeatherForecast", formData)
-			.then((response) => {
-				onAdd(response.data);
-				setFormData({
-					temperatureC: "",
-					temperatureF: "",
-					summary: "",
-				});
-			})
-			.catch((error) => {
-				console.error("Failed to add weather forecast:", error);
-			});
+	function handleSubmit(e) {
+		e.preventDefault();
+		onAdd(formData);
+		setFormData({
+			temperatureC: "",
+			temperatureF: "",
+			summary: "",
+		});
 	}
 
 	return (
-		<form className="add">
+		<form className="add" onSubmit={handleSubmit}>
 			<label htmlFor="temperatureC">TemperatureC:</label>
 			<input
 				type="text"
@@ -60,7 +52,7 @@ export default function AddForm({ onAdd }) {
 				onChange={handleChange}
 			/>
 			<div>
-				<Button button="Add" onButtonClicked={addTask} />
+				<Button button="Add" onButtonClicked={handleSubmit} />
 			</div>
 		</form>
 	);
